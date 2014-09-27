@@ -1,18 +1,17 @@
 import datetime as dt
-import matplotlib.pyplot as plt
-import pandas as pd
+import matplotlib.pyplot as plot
 
 import QSTK.qstkutil.qsdateutil as date_util
 import QSTK.qstkutil.tsutil as tsu
 import QSTK.qstkutil.DataAccess as data_access
 
 def create_pdf(t_stamps, data, legend, y_label, x_label, file_name):
-    plt.clf()
-    plt.plot(t_stamps, data)
-    plt.legend(legend)
-    plt.ylabel(y_label)
-    plt.xlabel(x_label)
-    plt.savefig(file_name, format='pdf')
+    plot.clf()
+    plot.plot(t_stamps, data)
+    plot.legend(legend)
+    plot.ylabel(y_label)
+    plot.xlabel(x_label)
+    plot.savefig(file_name, format='pdf')
 
 print "Selecting symbols and time period..."
 symbols = ["AAPL", "GLD", "GOOG", "$SPX", "XOM"]
