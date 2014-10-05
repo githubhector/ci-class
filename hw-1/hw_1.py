@@ -25,8 +25,8 @@ def portfolio_simulate(start_date, end_date, symbols, allocations):
     print stock_data_as_list_of_data_frames
 
     print "\n\nPortfolio historical closing prices as a data frame:"
-    stock_data_as_data_frame = stock_data_as_list_of_data_frames[0]
-    print stock_data_as_data_frame
+    portfolio_closing_data_as_data_frame = stock_data_as_list_of_data_frames[0]
+    print portfolio_closing_data_as_data_frame
 
     print "\n\nPortfolio historical closing prices as a data dictionary:"
     stock_data_dict = dict(zip(['close'], stock_data_as_list_of_data_frames))
@@ -35,10 +35,15 @@ def portfolio_simulate(start_date, end_date, symbols, allocations):
     print "\n\nPortfolio historical closing prices:"
     print stock_data_dict['close']
 
+    print "Initial portfolio closing values:"
+    initial_portfolio_closing_values = portfolio_closing_data_as_data_frame.values[0,:]
+    print portfolio_closing_data_as_data_frame.values[0,:]
 
-    
+    print "Portfolio data frame normalized relative to initial closing values:"
+    normalized = portfolio_closing_data_as_data_frame / initial_portfolio_closing_values
+    print normalized
 
-    # TODO: find out why the close values above don't match data from yahoo website
+
 
     # TODO: readup on pandas: http://pandas.pydata.org
     # TODO: readup on numpy: http://www.numpy.org
@@ -51,7 +56,7 @@ def portfolio_simulate(start_date, end_date, symbols, allocations):
 
 
 
-
+    print "DONE"
     return 1, 2, 3, 4
     #return std_daily_ret, ave_daily_ret, sharpe_ratio, cummulative_ret
 #######################################################################################################
