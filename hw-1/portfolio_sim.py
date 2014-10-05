@@ -2,8 +2,8 @@ import datetime as dt
 import QSTK.qstkutil.qsdateutil as date_util
 import QSTK.qstkutil.DataAccess as data_access
 import QSTK.qstkutil.tsutil as tsu
+import unittest as unittest
 
-#######################################################################################################
 def portfolio_simulate(start_date, end_date, symbols, allocations):
     """ For the given portfolio and dates, calculate the std deviation of daily returns (volatility), the average
      daily return, the sharpe ratio, and the cumulative return """
@@ -34,87 +34,69 @@ def portfolio_simulate(start_date, end_date, symbols, allocations):
 
     return start_date, end_date, symbols, allocations, sharpe_ratio, std_deviation, ave_daily_return, cumulative_return
 
-# vol, daily_ret, sharpe, cum_ret = portfolio_simulate(
-#     dt.datetime(2010, 1, 1), dt.datetime(2010, 1, 6),
-#     ['BRCM', 'TXN', 'IBM', 'HNZ'], [0.4, 0.3, 0.1, 0.2])
 
-# vol, daily_ret, sharpe, cum_ret = portfolio_simulate(
-#     dt.datetime(2010, 1, 1), dt.datetime(2010, 1, 6),
-#     ['AXP', 'HPQ', 'IBM', 'HNZ'], [0.0, 0.0, 0.0, 1.0])
+class TestPortSim(unittest.TestCase):
+    def test_sim_1(self):
+        print "*** TEST 1 ***"
+        start, end, symbols, allocations, sharpe, std_deviation, ave_daily_ret, cum_ret = portfolio_simulate(
+        dt.datetime(2011, 1, 1), dt.datetime(2011, 12, 31),
+        ['AAPL', 'GLD', 'GOOG', 'XOM'], [0.4, 0.4, 0.0, 0.2])
 
-start, end, symbols, allocations, sharpe, std_deviation, ave_daily_ret, cum_ret = portfolio_simulate(
-    dt.datetime(2011, 1, 1), dt.datetime(2011, 12, 31),
-    ['AAPL', 'GLD', 'GOOG', 'XOM'], [0.4, 0.4, 0.0, 0.2])
+        print "Start date: ", start.strftime("%B %d, %Y")
+        print "End date: ", end.strftime("%B %d, %Y")
+        print "Symbols: ", symbols
+        print "Allocations: ", allocations
+        print "Sharpe ratio: ", sharpe
+        print "Volatility (std_dev of daily returns): ", std_deviation
+        print "Average daily return: ", ave_daily_ret
+        print "Cumulative return: ", cum_ret
 
-print "Start date: ", start
-print "End date: ", end
-print "Symbols: ", symbols
-print "Allocations: ", allocations
-print "Sharpe ratio: ", sharpe
-print "Volatility (std_dev of daily returns): ", std_deviation
-print "Average daily return: ", ave_daily_ret
-print "Cumulative return: ", cum_ret
+        self.assertAlmostEqual(1.02828403099, sharpe, 10)
+        self.assertAlmostEqual(0.0101467067654, std_deviation, 10)
+        self.assertAlmostEqual(0.000657261102001, ave_daily_ret, 10)
+        self.assertAlmostEqual(1.16487261965, cum_ret, 10)
 
-##################################################################################################################
-#
-# Start Date:  2010-01-01
-# End Date:  2010-01-06
-# Symbols:  ['BRCM', 'TXN', 'IBM', 'HNZ']
-# Optimal Allocations:  [0.4, 0.3, 0.1, 0.2]
-# Sharpe Ratio: -15.874507866387544
-# Volatility (stdev of daily returns): 0.004585591209447
-# Average Daily Return: -0.004585591209447
-# Cumulative Return*: 0.990828817581106
+        # Expected results:
+        # Start Date: January 1, 2011
+        # End Date: December 31, 2011
+        # Symbols: ['AAPL', 'GLD', 'GOOG', 'XOM']
+        # Optimal Allocations: [0.4, 0.4, 0.0, 0.2]
+        # Sharpe Ratio: 1.02828403099
+        # Volatility (stdev of daily returns):  0.0101467067654
+        # Average Daily Return:  0.000657261102001
+        # Cumulative Return:  1.16487261965
 
-# Start Date: January 01, 2010
-# End Date: January 06, 2010
-# Symbols: ['AXP', 'HPQ', 'IBM', 'HNZ']
-# Optimal Allocations: [0.0, 0.0, 0.0, 1.0]
-# Sharpe Ratio: -15.8745078664
-# Volatility (stdev of daily returns): 0.00255950857435
-# Average Daily Return: -0.00255950857435
-# Cumulative Return: 0.994880982851
-#
-# Start Date: January 01, 2011
-# End Date: January 06, 2011
-# Symbols: ['AAPL', 'GLD', 'GOOG', 'XOM']
-# Optimal Allocations: [0.4, 0.4, 0.0, 0.2]
-# Sharpe Ratio: -7.20612630186
-# Volatility (stdev of daily returns): 0.00348343046782
-# Average Daily Return: -0.00158127988131
-# Cumulative Return: 0.995245460263
-#
+    def test_sim_2(self):
+        print "*** TEST 2 ***"
+        start, end, symbols, allocations, sharpe, std_deviation, ave_daily_ret, cum_ret = portfolio_simulate(
+        dt.datetime(2010, 1, 1), dt.datetime(2010, 12, 31),
+        ['AXP', 'HPQ', 'IBM', 'HNZ'], [0.0, 0.0, 0.0, 1.0])
 
-#
-#
-# Start Date: January 01, 2011
-# End Date: January 06, 2011
-# Symbols: ['ABT', 'ACAS', 'ACE', 'ADI']
-# Optimal Allocations: [0.9, 0.0, 0.1, 0.0]
-# Sharpe Ratio: 10.5804226507
-# Volatility (stdev of daily returns): 0.00410726333041
-# Average Daily Return: 0.00273750735072
-# Cumulative Return: 1.00820969947
-##################################################################################################################
+        print "Start date: ", start.strftime("%B %d, %Y")
+        print "End date: ", end.strftime("%B %d, %Y")
+        print "Symbols: ", symbols
+        print "Allocations: ", allocations
+        print "Sharpe ratio: ", sharpe
+        print "Volatility (std_dev of daily returns): ", std_deviation
+        print "Average daily return: ", ave_daily_ret
+        print "Cumulative return: ", cum_ret
 
-# Example 1
-# Start Date: January 1, 2011
-# End Date: December 31, 2011
-# Symbols: ['AAPL', 'GLD', 'GOOG', 'XOM']
-# Optimal Allocations: [0.4, 0.4, 0.0, 0.2]
-# Sharpe Ratio: 1.02828403099
-# Volatility (stdev of daily returns):  0.0101467067654
-# Average Daily Return:  0.000657261102001
-# Cumulative Return:  1.16487261965
+        self.assertAlmostEqual(1.29889334008, sharpe, 10)
+        self.assertAlmostEqual(0.00924299255937, std_deviation, 10)
+        self.assertAlmostEqual(0.000756285585593, ave_daily_ret, 10)
+        self.assertAlmostEqual(1.1960583568, cum_ret, 10)
 
-# Example 2
-# Start Date: January 1, 2010
-# End Date: December 31, 2010
-# Symbols: ['AXP', 'HPQ', 'IBM', 'HNZ']
-# Optimal Allocations:  [0.0, 0.0, 0.0, 1.0]
-# Sharpe Ratio: 1.29889334008
-# Volatility (stdev of daily returns): 0.00924299255937
-# Average Daily Return: 0.000756285585593
-# Cumulative Return: 1.1960583568
+        # Expected results:
+        # Start Date: January 1, 2010
+        # End Date: December 31, 2010
+        # Symbols: ['AXP', 'HPQ', 'IBM', 'HNZ']
+        # Optimal Allocations:  [0.0, 0.0, 0.0, 1.0]
+        # Sharpe Ratio: 1.29889334008
+        # Volatility (stdev of daily returns): 0.00924299255937
+        # Average Daily Return: 0.000756285585593
+        # Cumulative Return: 1.1960583568
+
+if __name__ == '__main__':
+    unittest.main()
 
 
