@@ -13,7 +13,8 @@ def portfolio_simulate(start_date, end_date, symbols, allocations):
     timestamps = date_util.getNYSEdays(start_date, end_date, closing_time)
 
     # Get adjusted closing prices
-    stock_dao = data_access.DataAccess('Yahoo', cachestalltime=0)
+    #stock_dao = data_access.DataAccess('Yahoo', cachestalltime=0)
+    stock_dao = data_access.DataAccess('Yahoo')
     stock_data_as_list_of_data_frames = stock_dao.get_data(timestamps, symbols, ['close'])
     portfolio_closing_values = stock_data_as_list_of_data_frames[0]
 
