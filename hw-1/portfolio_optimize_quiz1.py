@@ -5,7 +5,7 @@ import sys
 
 start = dt.datetime(2011, 1, 1)
 end = dt.datetime(2011, 12, 31)
-symbols = ['AAPL', 'GLD', 'GOOG', 'XOM']
+symbols = ['BRCM', 'TXN', 'IBM', 'HNZ']
 
 largest_sharpe = -sys.float_info.max
 
@@ -20,8 +20,9 @@ for a in range(0, 110, 10):
                     start, end, symbols, allocation)
                 if sharpe > largest_sharpe:
                     largest_sharpe = sharpe
+                    print "largest_sharpe: ", largest_sharpe
                     best = {"allocations":allocations,
-                            "sharpe": sharpe, "std_deviation": std_deviation, "ave_daily_ret":ave_daily_ret, "cum_ret":cum_ret}
+                            "sharpe": largest_sharpe, "std_deviation": std_deviation, "ave_daily_ret":ave_daily_ret, "cum_ret":cum_ret}
 
 
 print "\n\n***Best portfolio:"

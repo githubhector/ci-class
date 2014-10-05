@@ -3,9 +3,9 @@ import datetime as dt
 import numpy as np
 import sys
 
-start = dt.datetime(2011, 1, 1)
-end = dt.datetime(2011, 12, 31)
-symbols = ['AAPL', 'GLD', 'GOOG', 'XOM']
+start = dt.datetime(2010, 1, 1)
+end = dt.datetime(2010, 12, 31)
+symbols = ['AXP', 'HPQ', 'IBM', 'HNZ']
 
 largest_sharpe = -sys.float_info.max
 
@@ -35,14 +35,14 @@ print "Average daily return: ", best["ave_daily_ret"]
 print "Cumulative return: ", best["cum_ret"]
 
 # Expected results:
-# Start Date: January 1, 2011
-# End Date: December 31, 2011
-# Symbols: ['AAPL', 'GLD', 'GOOG', 'XOM']
-# Optimal Allocations: [0.4, 0.4, 0.0, 0.2]
-# Sharpe Ratio: 1.02828403099
-# Volatility (stdev of daily returns):  0.0101467067654
-# Average Daily Return:  0.000657261102001
-# Cumulative Return:  1.16487261965
+# Start Date: January 1, 2010
+# End Date: December 31, 2010
+# Symbols: ['AXP', 'HPQ', 'IBM', 'HNZ']
+# Optimal Allocations:  [0.0, 0.0, 0.0, 1.0]
+# Sharpe Ratio: 1.29889334008
+# Volatility (stdev of daily returns): 0.00924299255937
+# Average Daily Return: 0.000756285585593
+# Cumulative Return: 1.1960583568
 
 
 
