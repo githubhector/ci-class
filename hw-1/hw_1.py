@@ -37,11 +37,35 @@ def portfolio_simulate(start_date, end_date, symbols, allocations):
 
     print "Initial portfolio closing values:"
     initial_portfolio_closing_values = portfolio_closing_data_as_data_frame.values[0,:]
-    print portfolio_closing_data_as_data_frame.values[0,:]
+    print initial_portfolio_closing_values
 
     print "Portfolio data frame normalized relative to initial closing values:"
     normalized = portfolio_closing_data_as_data_frame / initial_portfolio_closing_values
     print normalized
+
+    print "Normalized data multiplied by allocations"
+    normalized_mult_by_allocations = normalized * allocations
+    print normalized_mult_by_allocations
+
+    print "Portfolio values as a series: "
+    port_values = normalized_mult_by_allocations.sum(axis=1)
+    print port_values
+
+    print "Daily returns for the portfolio"
+    daily_returns = tsu.returnize0(port_values)
+    print daily_returns
+
+    print "Average daily return:"
+    ave_daily_return = daily_returns.mean()
+    print ave_daily_return
+
+    print "Standard deviation of daily returns:"
+    std_deviation = daily_returns.std()
+    print std_deviation
+
+    print "Sharpe ratio:"
+    sharpe = tsu.get_sharpe_ratio(daily_returns, 0.0)
+    print sharpe
 
 
 
@@ -65,14 +89,15 @@ def portfolio_simulate(start_date, end_date, symbols, allocations):
 
 
 
-start_date = dt.datetime(2011, 1, 1)
-end_date = dt.datetime(2011, 12, 31)
+start_date = dt.datetime(2010, 1, 1)
+end_date = dt.datetime(2010, 1, 6)
 
 
 
 
 
-vol, daily_ret, sharpe, cum_ret = portfolio_simulate(start_date, end_date, ['GOOG','AAPL','GLD','XOM'], [0.4, 0.4, 0.0, 0.2])
+# vol, daily_ret, sharpe, cum_ret = portfolio_simulate(start_date, end_date, ['AAPL','GLD', 'GOOG', 'XOM'], [0.4, 0.4, 0.0, 0.2])
+vol, daily_ret, sharpe, cum_ret = portfolio_simulate(start_date, end_date, ['BRCM', 'TXN', 'IBM', 'HNZ'], [0.4, 0.3, 0.1, 0.2])
 
 print "Done..."
 
