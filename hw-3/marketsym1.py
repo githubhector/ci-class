@@ -23,17 +23,22 @@ print "Values file: ", values_file
 print "Current working directory: ", os.getcwd()
 
 orders_dataframe = pd.read_csv(orders_file)
-print "\nOrders data frame:"
-print orders_dataframe
+print "\nOrders data frame:\n", orders_dataframe
 
-# Create string lists of years, months, days
+# Create date list, without dups
 years = [str(x) for x in orders_dataframe['year'].tolist()]
 months = [str(x) for x in orders_dataframe['month'].tolist()]
 days = [str(x) for x in orders_dataframe['day'].tolist()]
 
-# Create date list of form year-mo-day
-
 dates = ["%s-%s-%s" % (y, m, d) for y, m, d in zip(years, months, days)]
+dates = sorted(list(set(dates))) # Remove dup dates and sort
+
+print "\nUnique order dates:\n", dates
+
+# Create symbol list without dups
+symbols = list(set(orders_dataframe['symbol'].tolist()))
+
+# Get the data for these dates and symbols
 
 pass
 
