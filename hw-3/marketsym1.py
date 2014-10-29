@@ -1,6 +1,7 @@
 import sys
 import csv
 import os
+import pandas as pd
 
 usage = "Usage: marketsym.py <starting_cash> <orders_csv_file> <values_csv_output_file>"
 
@@ -21,26 +22,18 @@ print "Values file: ", values_file
 
 print "Current working directory: ", os.getcwd()
 
-print "\nReading orders file..."
+orders_dataframe = pd.read_csv(orders_file)
+print "\nOrders data frame:"
+print orders_dataframe
 
-try:
-    orders_file_obj = open(orders_file, 'ru')
-    reader = csv.DictReader(orders_file_obj, fieldnames=['year', 'month', 'day', 'symbol', 'action', 'shares'], delimiter=',')
-except BaseException as e:
-    print "Trouble reading orders file: ", e
-    sys.exit(1)
+# Create string lists of years, months, days
+years = [str(x) for x in orders_dataframe['year'].tolist()]
+months = [str(x) for x in orders_dataframe['month'].tolist()]
+days = [str(x) for x in orders_dataframe['day'].tolist()]
 
-print "Orders:"
-for row in reader:
-    print row
+# Create date list of form year-mo-day
 
-print "Generating orders dates list..."
-
-
-print "Generating orders symbols list..."
-
-
-
+pass
 
 
 
