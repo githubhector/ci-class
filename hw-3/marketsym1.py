@@ -33,6 +33,8 @@ days = [str(x) for x in orders_dataframe['day'].tolist()]
 
 # Create date list of form year-mo-day
 
+dates = ["%s-%s-%s" % (y, m, d) for y, m, d in zip(years, months, days)]
+
 pass
 
 
