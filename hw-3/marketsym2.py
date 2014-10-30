@@ -48,6 +48,25 @@ timestamps = date_util.getNYSEdays(start_dt, end_dt + dt.timedelta(days=1), clos
 # Get adjusted closing prices for the symbols on these dates
 dao = data_access.DataAccess('Yahoo')
 closing_prices = dao.get_data(timestamps, symbols, ['close'])[0]
-print "\nAdjusted closing_prices:\n", closing_prices
+print "\nAdjusted closing prices dataframe:\n", closing_prices
+
+# Create zeroed out date-symbol dataframe for the trade matrix
+trade_matrix_df = pd.DataFrame(data=0, index=timestamps, columns=symbols)
+print "\nZeroed date-symbol trade matrix dataframe:\n", trade_matrix_df
+
+# Fill in the trade matrix using the orders
+for index, row in orders_df.iterrows():
+    row_dt = dt.datetime(row['year'], row['month'], row['day'], hour=16)
+    row_action = row['action']
+    row_shares = row['shares']
+    row_symbol = row['symbol']
+    if row_action == 'Sell':
+        row_shares = -row_shares
+    print row_dt, row_symbol, row_action, row_shares
+    trade_matrix_df.ix[row_dt, row_symbol] = row_shares
+print "\nTrade matrix:\n", trade_matrix_df
+
+
+
 
 pass
