@@ -47,8 +47,8 @@ timestamps = date_util.getNYSEdays(start_dt, end_dt + dt.timedelta(days=1), clos
 
 # Get adjusted closing prices for the symbols on these dates
 dao = data_access.DataAccess('Yahoo')
-closing_prices = dao.get_data(timestamps, symbols, ['close'])[0]
-print "\nAdjusted closing prices dataframe:\n", closing_prices
+closing_prices_df = dao.get_data(timestamps, symbols, ['close'])[0]
+print "\nAdjusted closing prices dataframe:\n", closing_prices_df
 
 # Create zeroed out date-symbol dataframe for the trade matrix
 trade_matrix_df = pd.DataFrame(data=0, index=timestamps, columns=symbols)
@@ -72,18 +72,20 @@ for index, row in orders_df.iterrows():
     trade_matrix_df.ix[trade_dt, trade_symbol] = trade_shares
 
     # The cash time series
-    cash_from_trade = trade_shares * closing_prices.ix[trade_dt, trade_symbol]
+    cash_from_trade = trade_shares * closing_prices_df.ix[trade_dt, trade_symbol]
     cash_balance += cash_from_trade
-    print "date:", trade_dt, "sym:", trade_symbol, "price:", closing_prices.ix[trade_dt, trade_symbol],\
+    print "date:", trade_dt, "sym:", trade_symbol, "price:", closing_prices_df.ix[trade_dt, trade_symbol],\
         "cash:", cash_from_trade, "balance:", cash_balance
     cash_ts[trade_dt] = cash_balance
-    # try:
-    #     cash_ts[trade_dt] = cash_ts[trade_dt] + cash_from_trade
-    # except KeyError:
-    #     cash_ts[trade_dt] = cash_from_trade
 
 print "\nTrade matrix:\n", trade_matrix_df
+print "\nCash time series:\n", cash_ts
 
+closing_prices_df['_CASH'] = 1.0
+print "\nClosing prices with _CASH appended:\n", closing_prices_df
 
-print "\nHERE:\n", cash_ts
+trade_matrix_df['_CASH'] = cash_ts
+trade_matrix_df = trade_matrix_df.fillna(method='ffill')
+print "\nTrading matrix with cash time series appended:\n", trade_matrix_df
+
 
