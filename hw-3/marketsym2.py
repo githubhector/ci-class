@@ -81,11 +81,24 @@ for index, row in orders_df.iterrows():
 print "\nTrade matrix:\n", trade_matrix_df
 print "\nCash time series:\n", cash_ts
 
+holding_matrix_df = trade_matrix_df.cumsum()
+print "\nHolding matrix:\n", holding_matrix_df
+
 closing_prices_df['_CASH'] = 1.0
 print "\nClosing prices with _CASH appended:\n", closing_prices_df
 
 trade_matrix_df['_CASH'] = cash_ts
 trade_matrix_df = trade_matrix_df.fillna(method='ffill')
-print "\nTrading matrix with cash time series appended:\n", trade_matrix_df
+print "\nTrading matrix with cash appended:\n", trade_matrix_df
+
+holding_matrix_df['_CASH'] = cash_ts
+holding_matrix_df = holding_matrix_df.fillna(method='ffill')
+print "\nHolding matrix with cash appended:\n", holding_matrix_df
+
+print "\nClosing prices: \n", closing_prices_df
+
+values_df = holding_matrix_df.combineMult(closing_prices_df)
+print "\nValues: ", values_df
+
 
 
