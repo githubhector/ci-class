@@ -58,7 +58,8 @@ print "\nZeroed date-symbol trade matrix dataframe:\n", trade_matrix_df
 cash_ts = pd.Series()
 cash_ts[start_dt - dt.timedelta(days=1)] = float(starting_cash)
 
-# Fill in the trade matrix and cash balance time series using the orders
+# Fill in the trade matrix and cash balance series
+cash_balance = float(starting_cash)
 for index, row in orders_df.iterrows():
     trade_dt = dt.datetime(row['year'], row['month'], row['day'], hour=16)
     trade_action = row['action']
@@ -72,10 +73,14 @@ for index, row in orders_df.iterrows():
 
     # The cash time series
     cash_from_trade = trade_shares * closing_prices.ix[trade_dt, trade_symbol]
-    try:
-        cash_ts[trade_dt] = cash_ts[trade_dt] + cash_from_trade
-    except KeyError:
-        cash_ts[trade_dt] = cash_from_trade
+    cash_balance += cash_from_trade
+    print "date:", trade_dt, "sym:", trade_symbol, "price:", closing_prices.ix[trade_dt, trade_symbol],\
+        "cash:", cash_from_trade, "balance:", cash_balance
+    cash_ts[trade_dt] = cash_balance
+    # try:
+    #     cash_ts[trade_dt] = cash_ts[trade_dt] + cash_from_trade
+    # except KeyError:
+    #     cash_ts[trade_dt] = cash_from_trade
 
 print "\nTrade matrix:\n", trade_matrix_df
 
