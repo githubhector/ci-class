@@ -62,11 +62,13 @@ for index, row in orders_df.iterrows():
     row_symbol = row['symbol']
     if row_action == 'Sell':
         row_shares = -row_shares
-    print row_dt, row_symbol, row_action, row_shares
     trade_matrix_df.ix[row_dt, row_symbol] = row_shares
 print "\nTrade matrix:\n", trade_matrix_df
 
+# Create time series for cash balance on the date range
+cash_ts = pd.Series()
+cash_ts[start_dt - dt.timedelta(days=1)] = float(starting_cash)
 
-
+print "\nHERE:\n", cash_ts
 
 pass
