@@ -54,21 +54,31 @@ print "\nAdjusted closing prices dataframe:\n", closing_prices
 trade_matrix_df = pd.DataFrame(data=0, index=timestamps, columns=symbols)
 print "\nZeroed date-symbol trade matrix dataframe:\n", trade_matrix_df
 
-# Fill in the trade matrix using the orders
-for index, row in orders_df.iterrows():
-    row_dt = dt.datetime(row['year'], row['month'], row['day'], hour=16)
-    row_action = row['action']
-    row_shares = row['shares']
-    row_symbol = row['symbol']
-    if row_action == 'Sell':
-        row_shares = -row_shares
-    trade_matrix_df.ix[row_dt, row_symbol] = row_shares
-print "\nTrade matrix:\n", trade_matrix_df
-
-# Create time series for cash balance on the date range
+# Create time series for cash balance on the date range. Set starting balance one day prior to first trade.
 cash_ts = pd.Series()
 cash_ts[start_dt - dt.timedelta(days=1)] = float(starting_cash)
 
+# Fill in the trade matrix and cash balance time series using the orders
+for index, row in orders_df.iterrows():
+    trade_dt = dt.datetime(row['year'], row['month'], row['day'], hour=16)
+    trade_action = row['action']
+    trade_shares = row['shares']
+    trade_symbol = row['symbol']
+    if trade_action == 'Sell':
+        trade_shares = -trade_shares
+
+    # The trade matrix
+    trade_matrix_df.ix[trade_dt, trade_symbol] = trade_shares
+
+    # The cash time series
+    cash_from_trade = trade_shares * closing_prices.ix[trade_dt, trade_symbol]
+    try:
+        cash_ts[trade_dt] = cash_ts[trade_dt] + cash_from_trade
+    except KeyError:
+        cash_ts[trade_dt] = cash_from_trade
+
+print "\nTrade matrix:\n", trade_matrix_df
+
+
 print "\nHERE:\n", cash_ts
 
-pass
