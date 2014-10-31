@@ -73,7 +73,7 @@ for index, row in orders_df.iterrows():
 
     # The cash time series
     cash_from_trade = trade_shares * closing_prices_df.ix[trade_dt, trade_symbol]
-    cash_balance += cash_from_trade
+    cash_balance -= cash_from_trade
     print "date:", trade_dt, "sym:", trade_symbol, "price:", closing_prices_df.ix[trade_dt, trade_symbol],\
         "cash:", cash_from_trade, "balance:", cash_balance
     cash_ts[trade_dt] = cash_balance
@@ -98,7 +98,12 @@ print "\nHolding matrix with cash appended:\n", holding_matrix_df
 print "\nClosing prices: \n", closing_prices_df
 
 values_df = holding_matrix_df.combineMult(closing_prices_df)
-print "\nValues: ", values_df
+print "\nValues:\n", values_df
+
+
+portfolio_values_df = values_df.sum(axis=1)
+print "\nPortfolio values:\n", portfolio_values_df
+portfolio_values_df.to_csv(path=values_file)
 
 
 

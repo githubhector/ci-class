@@ -1,0 +1,4 @@
+year,month,day,symbol,action,shares
+2008,12,3,AAPL,Buy,130
+2008,12,8,AAPL,Sell,130
+2008,12,5,IBM,Buy,50
