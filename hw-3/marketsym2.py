@@ -100,7 +100,6 @@ print "\nClosing prices: \n", closing_prices_df
 values_df = holding_matrix_df.combineMult(closing_prices_df)
 print "\nValues:\n", values_df
 
-
 portfolio_values_df = values_df.sum(axis=1)
 print "\nPortfolio values:\n", portfolio_values_df
 portfolio_values_df.to_csv(path=values_file)
